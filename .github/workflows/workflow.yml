@@ -26,7 +26,7 @@ jobs:
 
     - name: Deploy DAGs to Airflow
       run: |
-        kubectl apply -f /home/sigmoid/.cache/helm/repository/airflow/values.yaml
+        kubectl upgrade -f /home/sigmoid/.cache/helm/repository/airflow/values.yaml
 
     - name: Trigger Airflow DAGs
       run: |
