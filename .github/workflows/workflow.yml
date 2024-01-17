@@ -1,0 +1,35 @@
+name: Deploy DAGs to Airflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy_dags:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up kubectl
+      uses: stefanprodan/kubectl@v1
+      with:
+        kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
+
+    - name: Configure kustomize
+      run: |
+        mkdir -p ~/.airflow
+        cp /home/sigmoid/.kube/config ~/.airflow/config
+        kubectl config use-context your-kube-context
+
+    - name: Deploy DAGs to Airflow
+      run: |
+        kubectl apply -f /home/sigmoid/.cache/helm/repository/airflow/values.yaml
+
+    - name: Trigger Airflow DAGs
+      run: |
+        kubectl port-forward service/airflow-webserver 9090:8080 &
+        sleep 5
+        # python3 trigger_airflow_dags.py  # Adjust as needed
