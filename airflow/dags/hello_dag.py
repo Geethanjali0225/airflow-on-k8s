@@ -20,11 +20,7 @@ default_dag_args = {
 # Any task you create within the context manager is automatically added to the
 # DAG object.
 with models.DAG(
-<<<<<<< HEAD:airflow/dags/hello_dag.py
-    "hello_dag",
-=======
-    "Dag3",
->>>>>>> 34a0bcb59d23d04928b592991e33af97a8d4dc16:airflow/dags/dag3.py
+
     schedule_interval=datetime.timedelta(days=1),
     default_args=default_dag_args,
 ) as dag:
